@@ -1,0 +1,30 @@
+version: "3"
+services:
+       location-admin-app:      
+           container_name: location-admin-app
+           image: locationcoreapiapp
+           restart: always
+           build: 
+            context: .
+            dockerfile: Dockerfile.yml
+           ports:
+             - "8090:5000"
+           links:
+             - mongo_location
+           environment: 
+            - DatabaseSettings:AdminLocationConnectionString=mongodb://mongo_location:27017
+       mongo-seed:
+            build:
+             context: ./mongo-seed
+             dockerfile: Dockerfile.yml
+            links:
+             - mongo_location
+       mongo_location:
+             container_name: mongo_location
+             image: mongo
+             volumes:
+              - locationMongodata:/data/db
+             ports:
+               - '27019:27017'      
+volumes: 
+      locationMongodata: 

@@ -1,0 +1,4 @@
+FROM mongo
+
+COPY init.json /init.json
+CMD mongoimport --host mongo_location --db locationDB --collection address --type json --file /init.json --jsonArray
